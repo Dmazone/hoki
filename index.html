@@ -38,6 +38,9 @@
   <meta name="twitter:description" content="Khodam kamu siapa? Dan makan apa hari ini? Udah viral di Korea! Cobain gratis sekarang~ 🌸✨" />
   <meta name="twitter:image"       content="https://dmazone.github.io/hoki/og.jpg" />
 
+  <!-- ── Monetag 도메인 인증 태그 ───────────────────── -->
+  <meta name="monetag" content="d89cac26ae746af77369036c435c525a">
+
   <!-- ── Tailwind CSS CDN ────────────────────────────────
        백엔드리스 단일 HTML 구조이므로 CDN 방식을 사용합니다.
        추후 성능 최적화 시 빌드 프로세스에 Tailwind CLI를 추가하세요.
@@ -783,7 +786,94 @@ function openWhatsAppShare(config, result) {
           ].join('');
         }
 
-        // ── 인도네시아 스킨 결과 카드 ────────────────────
+        // ── 멕시코 스킨 결과 카드 (아스텍 달력) ─────────
+        else if (cfg.country === 'mexico') {
+          resultCardHtml = [
+            // 아스텍 카드 이모지 + 이름
+            '<div class="text-center mb-5">',
+            '<div class="text-6xl mb-2 select-none">', result.aztecCard.emoji, '</div>',
+            '<h2 class="text-xl font-black" style="color:var(--accent)">', result.aztecCard.name, '</h2>',
+            '<p class="text-xs text-gray-400 mt-0.5">', result.aztecCard.glyph, '</p>',
+            '</div>',
+
+            // 스페인어 메시지
+            '<div class="rounded-2xl p-4 mb-4 text-sm leading-relaxed" style="background:white;border:1px solid var(--card-border)">',
+            '<p class="text-gray-700">', result.aztecCard.message, '</p>',
+            '</div>',
+
+            // 만트라
+            '<p class="text-center font-bold text-sm mb-4" style="color:var(--accent)">', result.aztecCard.mantra, '</p>',
+
+            // 행운 정보 그리드
+            '<div class="grid grid-cols-2 gap-3 mb-4">',
+            '<div class="rounded-2xl p-3 text-center" style="background:var(--accent-light)">',
+            '<div class="text-2xl select-none">🔢</div>',
+            '<div class="text-xs text-gray-500 mt-1">Número de la Suerte</div>',
+            '<div class="font-black text-xl mt-0.5" style="color:var(--accent)">', result.luckyNumber, '</div>',
+            '</div>',
+            '<div class="rounded-2xl p-3 text-center" style="background:var(--accent-light)">',
+            '<div class="text-2xl select-none">⏰</div>',
+            '<div class="text-xs text-gray-500 mt-1">Hora de Poder</div>',
+            '<div class="font-bold text-xs mt-0.5" style="color:var(--accent)">', result.luckyTime, '</div>',
+            '</div>',
+            '</div>',
+
+            // 행운의 색상
+            '<div class="rounded-2xl p-3 text-center mb-4" style="background:white;border:1px solid var(--card-border)">',
+            '<div class="text-xs text-gray-400 mb-1">Color Sagrado del Día</div>',
+            '<div class="font-bold" style="color:var(--accent)">', result.luckyColor.es, ' · ', result.luckyColor.alt, '</div>',
+            '</div>',
+
+            // 음식 행운 팁
+            '<div class="rounded-2xl p-3 text-center mb-4" style="background:var(--accent-light)">',
+            '<p class="text-sm font-bold" style="color:var(--accent)">', result.aztecCard.foodTip, '</p>',
+            '</div>'
+          ].join('');
+        }
+
+        // ── 브라질 스킨 결과 카드 (오리샤 수호령) ────────
+        else if (cfg.country === 'brazil') {
+          resultCardHtml = [
+            // 오리샤 이모지 + 희귀도 배지
+            '<div class="text-center mb-4">',
+            '<div class="text-6xl mb-3 select-none">', result.orixa.emoji, '</div>',
+            '<span class="rarity-badge inline-block rounded-full px-3 py-1 text-xs font-black mb-3" style="background:var(--accent-light);color:var(--accent)">',
+            result.orixa.rarity,
+            '</span>',
+            '</div>',
+
+            // 오리샤 이름 + 성격 태그
+            '<h2 class="text-xl font-black text-center mb-1" style="color:var(--accent)">Orixá: ', result.orixa.name, '</h2>',
+            '<div class="text-center mb-4">',
+            '<span class="inline-block rounded-full px-4 py-1 text-xs font-bold" style="background:var(--accent-light);color:var(--accent)">',
+            result.orixa.personalityTag,
+            '</span>',
+            '</div>',
+
+            // 오리샤 설명
+            '<div class="rounded-2xl p-4 mb-4 text-sm leading-relaxed text-gray-700" style="background:white;border:1px solid var(--card-border)">',
+            result.orixa.desc,
+            '</div>',
+
+            // K-Food 섹션
+            '<div class="rounded-2xl p-4 mb-4" style="background:white;border:1px solid var(--card-border)">',
+            '<div class="text-xs font-black mb-3" style="color:var(--accent)">🍜 K-Food do Dia</div>',
+            '<div class="flex items-start gap-3">',
+            '<span class="text-3xl flex-shrink-0 select-none">', result.kFood.emoji, '</span>',
+            '<div>',
+            '<div class="font-black text-sm mb-1" style="color:var(--accent)">', result.kFood.name, '</div>',
+            '<span class="inline-block rounded-full px-2 py-0.5 text-xs font-bold mb-1" style="background:var(--accent-light);color:var(--accent)">', result.kFood.tag, '</span>',
+            '<p class="text-xs text-gray-600 leading-relaxed">', result.kFood.desc, '</p>',
+            '</div>',
+            '</div>',
+            '</div>',
+
+            // 행운 이모지 콤보
+            '<div class="text-center text-4xl mb-2 select-none">', result.luckyEmojiCombo, '</div>'
+          ].join('');
+        }
+
+        // ── 인도네시아 스킨 결과 카드 (기본값) ──────────
         else {
           resultCardHtml = [
             // 수호령 이모지 + 희귀도 배지
