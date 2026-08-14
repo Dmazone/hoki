@@ -96,10 +96,9 @@
 <script src="https://pl30266863.effectivecpmnetwork.com/b0/f9/5c/b0f95c6659075e426bc04c507ff6ae00.js"></script>
 <script src="https://quge5.com/88/tag.min.js" data-zone="259796" async data-cfasync="false"></script>
 
-  <!-- ── Social Bar 클릭 가로채기 방지 ─────────────────
-       Adsterra Social Bar의 invoke_layer(투명 전체화면 <a>)가
-       CTA 버튼 클릭을 가로채는 문제를 수정합니다.
-       광고 수익에는 영향 없음 — 팝언더/배너/소셜바 알림은 정상 유지.
+  <!-- ── 투명 전체화면 레이어만 차단 ────────────────────
+       화면 80% 이상 + top<=0 조건인 투명 <a>만 차단합니다.
+       Social Bar 알림·팝언더 클릭 레이어는 정상 유지.
   ──────────────────────────────────────────────────────── -->
   <script>
     (function () {
@@ -107,8 +106,9 @@
         document.querySelectorAll('a').forEach(function (a) {
           var cs = getComputedStyle(a);
           if (cs.position === 'fixed' &&
-              parseFloat(cs.width)  > window.innerWidth  * 0.5 &&
-              parseFloat(cs.height) > window.innerHeight * 0.3) {
+              parseFloat(cs.width)  > window.innerWidth  * 0.8 &&
+              parseFloat(cs.height) > window.innerHeight * 0.8 &&
+              parseFloat(cs.top) <= 0) {
             a.style.setProperty('pointer-events', 'none', 'important');
           }
         });
@@ -514,7 +514,7 @@ function showInterstitialAd(onComplete) {
   // ── 3초 폴백 타이머 ──────────────────────────────────────
   // AdBlock 사용자, 광고 네트워크 오류, 느린 네트워크 모두 커버
   // 어떤 상황에서도 유저가 결과 화면으로 반드시 이동하도록 보장
-  const fallbackTimer = setTimeout(fireCallback, 3000);
+  const fallbackTimer = setTimeout(fireCallback, 5000);
 
   // ── 광고 대기 오버레이 DOM 생성 ──────────────────────────
   // 유저에게 "잠깐 기다려 주세요" 피드백을 주는 반투명 풀스크린 레이어
@@ -586,7 +586,7 @@ function showInterstitialAd(onComplete) {
   let spinnerIdx = 0;
 
   const progressInterval = setInterval(function () {
-    progress += 100 / 30; // 100ms 간격 × 30회 = 3000ms
+    progress += 100 / 50; // 100ms 간격 × 50회 = 5000ms
     if (progressEl) progressEl.style.width = Math.min(progress, 100) + '%';
     spinnerIdx = (spinnerIdx + 1) % spinnerFrames.length;
     if (spinnerEl) spinnerEl.textContent = spinnerFrames[spinnerIdx];
