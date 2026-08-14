@@ -1407,6 +1407,9 @@ function openWhatsAppShare(config, result) {
           '<div id="container-885d437a9988328211937c3edeff1988"></div>',
           '</div>',
 
+          // 블로그 최신글 위젯 (Blogger JSONP — 체류시간 + 블로그 교차트래픽)
+          '<div id="hoki-blog-feed" class="w-full max-w-sm mt-4 mb-2"></div>',
+
           '</div>' // 화면 닫기
         ].join(''));
 
@@ -1418,6 +1421,38 @@ function openWhatsAppShare(config, result) {
           nbs.setAttribute('data-cfasync', 'false');
           nbs.src = 'https://pl30266861.effectivecpmnetwork.com/885d437a9988328211937c3edeff1988/invoke.js';
           document.head.appendChild(nbs);
+        }
+
+        // 블로그 최신글 JSONP 피드 (1회만 로드)
+        if (!window._blogFeedLoaded) {
+          window._blogFeedLoaded = true;
+          window._hokiBlogCb = function(data) {
+            try {
+              var el = document.getElementById('hoki-blog-feed');
+              if (!el) return;
+              var entries = (data.feed || {}).entry || [];
+              if (!entries.length) return;
+              var color = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#C2185B';
+              var html = '<p style="font-size:0.68em;color:#aaa;text-align:center;margin-bottom:6px;letter-spacing:0.02em">📖 Artikel Hoki Terbaru</p>';
+              entries.slice(0, 3).forEach(function(e) {
+                var title = ((e.title || {}).$t || '').trim();
+                var url = '';
+                (e.link || []).forEach(function(l) { if (l.rel === 'alternate') url = l.href; });
+                if (!title || !url) return;
+                var short = title.length > 50 ? title.slice(0, 50) + '…' : title;
+                html += '<a href="' + url + '" target="_blank" rel="noopener" '
+                  + 'style="display:block;background:#fff;border-radius:10px;padding:9px 12px;margin-bottom:6px;'
+                  + 'text-decoration:none;font-size:0.76em;color:' + color + ';font-weight:600;'
+                  + 'border:1px solid rgba(0,0,0,0.08);line-height:1.4;box-shadow:0 1px 4px rgba(0,0,0,0.06)">'
+                  + short + '</a>';
+              });
+              el.innerHTML = html;
+            } catch(ignore) {}
+          };
+          var bfs = document.createElement('script');
+          bfs.async = true;
+          bfs.src = 'https://hokiku-cek-khodam-indonesia.blogspot.com/feeds/posts/default?alt=json&max-results=3&callback=_hokiBlogCb';
+          document.head.appendChild(bfs);
         }
 
         // CSS 변수로 공유 버튼 색상 지정
