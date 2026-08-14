@@ -1449,9 +1449,17 @@ function openWhatsAppShare(config, result) {
               el.innerHTML = html;
             } catch(ignore) {}
           };
+          var _blogUrls = {
+            indonesia:   'https://hokiku-cek-khodam-indonesia.blogspot.com/feeds/posts/default',
+            india:       'https://vedicluckycard2026india.blogspot.com/feeds/posts/default',
+            mexico:      'https://hokiku-tonalli-mexico.blogspot.com/feeds/posts/default',
+            brazil:      'https://hokiku-orixas-sorte-brasil.blogspot.com/feeds/posts/default',
+            philippines: 'https://pilipinas-dm9k7x2026.blogspot.com/feeds/posts/default'
+          };
+          var _blogBase = _blogUrls[cfg.country] || _blogUrls.indonesia;
           var bfs = document.createElement('script');
           bfs.async = true;
-          bfs.src = 'https://hokiku-cek-khodam-indonesia.blogspot.com/feeds/posts/default?alt=json&max-results=3&callback=_hokiBlogCb';
+          bfs.src = _blogBase + '?alt=json&max-results=3&callback=_hokiBlogCb';
           document.head.appendChild(bfs);
         }
 
